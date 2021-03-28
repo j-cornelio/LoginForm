@@ -8,8 +8,7 @@ import Heading                  from './Heading';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-      padding: theme.spacing(5),
-      outline: '5px solid red'
+      padding: theme.spacing(5)
   },
 }))
 

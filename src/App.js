@@ -1,31 +1,26 @@
-import { makeStyles }     from '@material-ui/core/styles';
+import { makeStyles }     from '@material-ui/core/styles'
 import { 
   Typography,
   AppBar,
   Toolbar,
-  Menu,
   IconButton,
-}                         from '@material-ui/core';
-import MenuIcon           from '@material-ui/icons/Menu';
+}                         from '@material-ui/core'
+import MenuIcon           from '@material-ui/icons/Menu'
 import Login              from './components/loginPage/'
-import { green } from '@material-ui/core/colors'
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(1),
-    [theme.breakpoints.down('sm')]: {
-      backgroundColor: theme.palette.secondary.main,
-    },
-    [theme.breakpoints.up('md')]: {
-      backgroundColor: theme.palette.primary.main,
-    },
-    [theme.breakpoints.up('lg')]: {
-      backgroundColor: green[500],
-    },
-    flexGrow: 1,
-    menuButton: {
-      marginRight: theme.spacing(2),
-    },
+  appbar: {
+    backgroundColor: 'white',
+    boxShadow: '0 0 0 0',
+    color: 'black',
+    borderBottom: '10px solid #eee',
+  },
+  logo: {
+    flex: 1,
+    textAlign: 'center',
+  },
+  menu: {
+    alignSelf: 'flex-start'
   }
 }))
 
@@ -33,26 +28,19 @@ const useStyles = makeStyles((theme) => ({
 const App = () => {
   const classes = useStyles()
 
-  // return (
-  //   <div className={classes.root}>
-  //     <Typography>{'down(sm): red'}</Typography>
-  //     <Typography>{'up(md): blue'}</Typography>
-  //     <Typography>{'up(lg): green'}</Typography>
-  //   </div>
-  // )
-
   return (
     <>
-     <AppBar position="fixed">
+     <AppBar className={classes.appbar} position="fixed">
         <Toolbar variant="dense">
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+          <IconButton className={classes.menu} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" color="inherit">
-            Photos
+          <Typography className={classes.logo} variant="h6" color="inherit">
+            logo
           </Typography>
         </Toolbar>
       </AppBar>
+
       <Login />
     </>
   )
