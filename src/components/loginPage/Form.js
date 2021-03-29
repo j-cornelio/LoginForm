@@ -56,6 +56,7 @@ class Form extends Component {
     firstNameError: false,
     firstNameHelperText: '',
     lastNameError: false,
+    lastNameHelperText: '',
     dateBirthError: false,
     dateBirthHelperText: '',
     homePhoneError: false,
@@ -68,17 +69,14 @@ class Form extends Component {
     cityHelperText: '',
     zipError: false,
     zipHelperText: '',
+    stateSelect: '',
+    stateError: false,
     passwordError: false,
     passwordHelperText: '',
     passwordConfirmError: false,
     passwordConfirmHelperText: '',
-    stateSelect: '',
-    stateError: false,
     stateHelperText: '',
     submitButton: false,
-    noErrorState: false,
-    noErrorOnInputs: false,
-    submit: false,
     open: false,
   }
 
@@ -92,14 +90,14 @@ class Form extends Component {
 
   stringChange = (e) => {
     if(/[^a-zA-Z]/.test(e.target.value)){
-      this.setState({
-        [`${e.target.id}Error`]: true,
-        [`${e.target.id}HelperText`]: 'please enter text'
-      })
+      this.setState((state, props) => ({
+        [`${e.target.name}Error`]: true,
+        [`${e.target.name}HelperText`]: 'please enter text'
+      }))
     } else {
       this.setState({
-        [`${e.target.id}Error`]: false,
-        [`${e.target.id}HelperText`]: '',
+        [`${e.target.name}Error`]: false,
+        [`${e.target.name}HelperText`]: '',
       })
     }
   }
@@ -107,13 +105,13 @@ class Form extends Component {
   numberChange = (e) => {
     if(/[^0-9-/]/.test(e.target.value)){
       this.setState({
-        [`${e.target.id}Error`]: true,
-        [`${e.target.id}HelperText`]: 'please enter numbers'
+        [`${e.target.name}Error`]: true,
+        [`${e.target.name}HelperText`]: 'please enter numbers'
       })
     } else {
       this.setState({
-        [`${e.target.id}Error`]: false,
-        [`${e.target.id}HelperText`]: '',
+        [`${e.target.name}Error`]: false,
+        [`${e.target.name}HelperText`]: '',
       })
     }
   }
@@ -148,12 +146,26 @@ class Form extends Component {
     }
   }
 
+  passwordChange = (e) => {
+    if(/[^a-zA-Z0-9!@#$%^&*()-_]/.test(e.target.value)){
+      this.setState((state, props) => ({
+        [`${e.target.name}Error`]: true,
+        [`${e.target.name}HelperText`]: 'please enter text'
+      }))
+    } else {
+      this.setState({
+        [`${e.target.name}Error`]: false,
+        [`${e.target.name}HelperText`]: '',
+      })
+    }
+  }
+
   isErrorInputs = () => {
     const bool = []
 
     Object.values(this.state)
       .forEach((item, index) => {
-        if(index < 18){
+        if(index < 22){
           if(typeof item !== 'string') 
             bool.push(item)
         }
@@ -161,10 +173,7 @@ class Form extends Component {
 
     const result = bool.every((item) => item === false)
 
-    // console.log('BOOLEANS ===> ', bool)
-    // console.log('******** RESULT ******** ', result)
-
-    if(result && this.state.submit) this.handleOpen()
+    if(result) this.handleOpen()
   }
 
   onSubmit = (e) => {
@@ -174,27 +183,18 @@ class Form extends Component {
       .forEach((item) => {
         if(item.type !== 'button' && item.type !== 'submit'){
           if(item.value.length === 0){
-      console.log('item --- ', item)
-
             this.setState((state, props) => ({
               [`${item.name}Error`]: true,
-              [`${item.name}HelperText`]: `please enter your ${item.name}`
+              [`${item.name}HelperText`]: `please enter your ${item.id}`
             }))
-          } else {
-            this.setState((state, props) => ({
-              [`${item.name}Error`]: false,
-              [`${item.name}HelperText`]: '',
-            }))
-          }
+          } 
         }
     })
 
-    this.isErrorInputs(e.target)
-
-    this.setState(() => ({submit: true}))
+    window.setTimeout(() => this.isErrorInputs(e.target), 0)
   }
 
-  handleState = (e) => {
+  handleUSstate = (e) => {
     this.setState({
       stateSelect: e.target.value,
       stateError: false 
@@ -227,7 +227,6 @@ class Form extends Component {
       stateError,
       stateHelperText,
       stateSelect,
-      noErrorState,
       open,
     }                            = this.state
 
@@ -242,9 +241,8 @@ class Form extends Component {
           id="first name"
           name="firstName"
           error={firstNameError}
-          helpertext={firstNameHelperText}
+          helperText={firstNameHelperText}
           onChange={this.stringChange} 
-          // onChange={(e)=>setName(e.target.value)}
         />
         <TextField 
           className={classes.textFld} 
@@ -255,7 +253,7 @@ class Form extends Component {
           name="lastName"
           label="Last Name" 
           error={lastNameError}
-          helpertext={lastNameHelperText}
+          helperText={lastNameHelperText}
           onChange={this.stringChange} 
         />
         <TextField 
@@ -263,12 +261,12 @@ class Form extends Component {
           InputProps={{
             classes: { input: classes.resize },
           }}
+          inputProps={{ maxLength: 10 }}
           id="date of birth" 
           name="dateBirth"
           label="Date of Birth" 
-          inputProps={{ maxLength: 10 }}
           error={dateBirthError}
-          helpertext={dateBirthHelperText}
+          helperText={dateBirthHelperText}
           onChange={this.numberChange} 
         />
         <TextField 
@@ -281,7 +279,7 @@ class Form extends Component {
           name="homePhone"
           label="Home Phone" 
           error={homePhoneError}
-          helpertext={homePhoneHelperText}
+          helperText={homePhoneHelperText}
           onChange={this.phoneNumber} 
         />
         <TextField 
@@ -293,7 +291,7 @@ class Form extends Component {
           name="email"
           label="Email"
           error={emailError}
-          helpertext={emailHelperText}
+          helperText={emailHelperText}
           onChange={this.emailChange}
         />
         <TextField 
@@ -309,7 +307,7 @@ class Form extends Component {
             classes: { input: classes.resize },
           }}
           error={ssnError}
-          helpertext={ssnHelperText}
+          helperText={ssnHelperText}
           onChange={this.numberChange}
         />
         <TextField 
@@ -333,7 +331,7 @@ class Form extends Component {
             maxLength: 5
           }}
           error={zipError}
-          helpertext={zipHelperText}
+          helperText={zipHelperText}
           onChange={this.numberChange}
         />
         <FormControl error={stateError} className={classes.formControl} name="stateSelect">
@@ -343,7 +341,7 @@ class Form extends Component {
               name="state"
               id="stateSelect"
               value={stateSelect}
-              onChange={this.handleState}
+              onChange={this.handleUSstate}
             >            
               {states.map((item) => <MenuItem key={item} name="MenuItem" value={item}>{item}</MenuItem>)}
             </Select>
@@ -360,7 +358,8 @@ class Form extends Component {
           type="password" 
           label="Password" 
           error={passwordError}
-          helpertext={passwordHelperText}
+          helperText={passwordHelperText}
+          onChange={this.passwordChange}
         />
         <TextField 
           className={classes.textFld}
@@ -373,10 +372,9 @@ class Form extends Component {
           type="password"  
           label="Confirm Password" 
           error={passwordConfirmError}
-          helpertext={passwordConfirmHelperText}
+          helperText={passwordConfirmHelperText}
+          onChange={this.passwordChange}
         />
-
-        {/*<p>noErrorState: {JSON.stringify(this.state.noErrorState)}</p>*/}
 
         <div className={classes.buttonWrapper}>
           <Button className={classes.button} type="submit" variant="contained" color="primary">submit</Button>
