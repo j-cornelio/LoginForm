@@ -271,8 +271,8 @@ class Form extends Component {
         />
         <TextField 
           className={classes.textFld} 
-          inputProps={{ maxLength: 13 }}
-          InputProps={{
+          inputProps={{ 
+            maxLength: 13,
             classes: { input: classes.resize },
           }}
           id="home phone" 
