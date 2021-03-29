@@ -385,7 +385,6 @@ class Form extends Component {
           handleClose={this.handleClose}
           open={open} 
         />
-        <pre>{JSON.stringify(this.state, null, 2) }</pre>
       </form>
     )
   }
