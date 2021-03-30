@@ -86,37 +86,41 @@ class Form extends Component {
   }
 
   handleOpen = () => {
-    this.setState({open: true})
+    this.setState(() => ({open: true}))
   }
 
   handleClose = () => {
-    this.setState({open: false})
+    this.setState(() => ({open: false}))
   }
 
   stringChange = (e) => {
+    const {name, value} = e.target;
+
     if(/[^a-zA-Z]/.test(e.target.value)){
       this.setState((state, props) => ({
-        [`${e.target.name}Error`]: true,
-        [`${e.target.name}HelperText`]: 'please enter text'
+        [`${name}Error`]: true,
+        [`${name}HelperText`]: 'please enter text'
       }))
     } else {
       this.setState({
-        [`${e.target.name}Error`]: false,
-        [`${e.target.name}HelperText`]: '',
+        [`${name}Error`]: false,
+        [`${name}HelperText`]: '',
       })
     }
   }
 
   numberChange = (e) => {
+    const {name, value} = e.target;
+    
     if(/[^0-9-/]/.test(e.target.value)){
       this.setState({
-        [`${e.target.name}Error`]: true,
-        [`${e.target.name}HelperText`]: 'please enter numbers'
+        [`${name}Error`]: true,
+        [`${name}HelperText`]: 'please enter numbers'
       })
     } else {
       this.setState({
-        [`${e.target.name}Error`]: false,
-        [`${e.target.name}HelperText`]: '',
+        [`${name}Error`]: false,
+        [`${name}HelperText`]: '',
       })
     }
   }
@@ -190,15 +194,17 @@ class Form extends Component {
   }
 
   passwordChange = (e) => {
-    if(/[^a-zA-Z0-9!@#$%^&*()-_]/.test(e.target.value)){
+    const {name, value} = e.target;
+
+    if(/[^a-zA-Z0-9!@#$%^&*()-_]/.test(value)){
       this.setState((state, props) => ({
-        [`${e.target.name}Error`]: true,
-        [`${e.target.name}HelperText`]: 'please enter text'
+        [`${name}Error`]: true,
+        [`${name}HelperText`]: 'please enter text'
       }))
     } else {
       this.setState({
-        [`${e.target.name}Error`]: false,
-        [`${e.target.name}HelperText`]: '',
+        [`${name}Error`]: false,
+        [`${name}HelperText`]: '',
       })
     }
   }

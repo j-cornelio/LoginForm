@@ -7,7 +7,7 @@ import {
 const useStyles = makeStyles((theme) => ({
   header: {
     marginBottom: 30,
-    marginTop: 20,
+    marginTop: 60,
     fontWeight: 'bold'
   },
   subhead: {
