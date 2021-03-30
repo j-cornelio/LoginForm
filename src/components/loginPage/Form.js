@@ -11,7 +11,8 @@ import {
   Select,
 }                           from '@material-ui/core'
 import { withStyles }       from "@material-ui/core/styles";
-import TransitionsModal     from "../TransitionsModal";
+import TransitionsModal     from "../TransitionsModal"
+import InputMask            from "react-input-mask"
 
 
 const states = ["Alabama", "Alaska", "American Samoa", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Guam", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Minor Outlying Islands", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Northern Mariana Islands", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Puerto Rico", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "U.S. Virgin Islands", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"]
@@ -51,6 +52,7 @@ const useStyles = theme => ({
   }
 })
 
+
 class Form extends Component {
   state = {
     firstNameError: false,
@@ -59,10 +61,12 @@ class Form extends Component {
     lastNameHelperText: '',
     dateBirthError: false,
     dateBirthHelperText: '',
+    homePhone: '',
     homePhoneError: false,
     homePhoneHelperText: '',
     emailError: false,
     emailHelperText: '',
+    socialSecurity: '',
     ssnError: false,
     ssnHelperText: '',
     cityError: false,
@@ -78,6 +82,7 @@ class Form extends Component {
     stateHelperText: '',
     submitButton: false,
     open: false,
+    value: null
   }
 
   handleOpen = () => {
@@ -144,6 +149,44 @@ class Form extends Component {
         emailHelperText: '',
       })
     }
+  }
+
+  workSS = (data) => {
+      const ss = this.state.socialSecurity
+      const arr = ss.split('')
+      const result = parseInt(arr.pop())
+
+      if(!!result || result === 0){
+          this.setState(() => ({ 
+            ssnError: false,
+            ssnHelperText: '' 
+          }))
+      } 
+  } 
+
+  workPhone = (data) => {
+      const ss = this.state.homePhone
+      const arr = ss.split('')
+      const result = parseInt(arr.pop())
+
+      if(!!result || result === 0){
+          this.setState(() => ({ 
+            homePhoneError: false,
+            homePhoneHelperText: '' 
+          }))
+      } 
+  } 
+
+  onSocialSecurity = (e) => {
+    this.setState({ socialSecurity: e.target.value })
+
+    window.setTimeout(() => this.workSS(), 0)
+  }
+
+  onHomePhone = (e) => {
+    this.setState({ homePhone: e.target.value })
+    
+    window.setTimeout(() => this.workPhone(), 0)
   }
 
   passwordChange = (e) => {
@@ -269,19 +312,23 @@ class Form extends Component {
           helperText={dateBirthHelperText}
           onChange={this.numberChange} 
         />
-        <TextField 
-          className={classes.textFld} 
-          inputProps={{ 
-            maxLength: 13,
-            classes: { input: classes.resize },
-          }}
-          id="home phone" 
-          name="homePhone"
-          label="Home Phone" 
-          error={homePhoneError}
-          helperText={homePhoneHelperText}
-          onChange={this.phoneNumber} 
-        />
+        <InputMask
+          mask="(999)999-9999"
+          value={this.state.homePhone}
+          onChange={this.onHomePhone}
+        >
+          {() => <TextField 
+                  className={classes.textFld} 
+                  inputProps={{ 
+                    classes: { input: classes.resize },
+                  }}
+                  id="home phone" 
+                  name="homePhone"
+                  label="Home Phone" 
+                  error={homePhoneError}
+                  helperText={homePhoneHelperText}
+                />}
+        </InputMask>
         <TextField 
           className={classes.textFld} 
           InputProps={{
@@ -294,22 +341,20 @@ class Form extends Component {
           helperText={emailHelperText}
           onChange={this.emailChange}
         />
-        <TextField 
-          className={classes.textFld}
-          id="social security" 
-          name="ssn" 
-          InputProps={{
-            classes: { input: classes.resize },
-          }}
-          label="SSN" 
-          inputProps={{ maxLength: 10 }}
-          InputProps={{
-            classes: { input: classes.resize },
-          }}
-          error={ssnError}
-          helperText={ssnHelperText}
-          onChange={this.numberChange}
-        />
+        <InputMask
+          mask="999-99-9999"
+          value={this.state.socialSecurity}
+          onChange={this.onSocialSecurity}
+        >
+          {() => <TextField 
+                  className={classes.textFld}
+                  id="social security" 
+                  name="ssn"
+                  label="SSN" 
+                  error={ssnError}
+                  helperText={ssnHelperText}
+                />}
+        </InputMask>
         <TextField 
           className={classes.textFld} 
           InputProps={{
@@ -364,13 +409,13 @@ class Form extends Component {
         <TextField 
           className={classes.textFld}
           id="confirmed password"
-          name="passwordConfirm" 
+          name="passwordConfirm"
           InputProps={{
             classes: { input: classes.resize },
           }}
           required
-          type="password"  
-          label="Confirm Password" 
+          type="password"
+          label="Confirm Password"
           error={passwordConfirmError}
           helperText={passwordConfirmHelperText}
           onChange={this.passwordChange}
