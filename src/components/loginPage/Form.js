@@ -155,7 +155,7 @@ class Form extends Component {
     }
   }
 
-  workSS = (data) => {
+  socialEntirelyFilled = (data) => {
       const ss = this.state.socialSecurity
       const arr = ss.split('')
       const result = parseInt(arr.pop())
@@ -168,7 +168,7 @@ class Form extends Component {
       } 
   } 
 
-  workPhone = (data) => {
+  phoneEntirelyFilled = (data) => {
       const ss = this.state.homePhone
       const arr = ss.split('')
       const result = parseInt(arr.pop())
@@ -184,13 +184,13 @@ class Form extends Component {
   onSocialSecurity = (e) => {
     this.setState({ socialSecurity: e.target.value })
 
-    window.setTimeout(() => this.workSS(), 0)
+    window.setTimeout(() => this.socialEntirelyFilled(), 0)
   }
 
   onHomePhone = (e) => {
     this.setState({ homePhone: e.target.value })
     
-    window.setTimeout(() => this.workPhone(), 0)
+    window.setTimeout(() => this.phoneEntirelyFilled(), 0)
   }
 
   passwordChange = (e) => {

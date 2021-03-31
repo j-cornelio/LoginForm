@@ -7,6 +7,7 @@ import {
 }                         from '@material-ui/core'
 import MenuIcon           from '@material-ui/icons/Menu'
 import Login              from './components/loginPage/'
+import Show           from './components/tutorialForm/Show'
 
 const useStyles = makeStyles((theme) => ({
   appbar: {
@@ -29,20 +30,22 @@ const App = () => {
   const classes = useStyles()
 
   return (
-    <>
-     <AppBar className={classes.appbar} position="fixed">
-        <Toolbar variant="dense">
-          <IconButton className={classes.menu} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-          <Typography className={classes.logo} variant="h6" color="inherit">
-            logo
-          </Typography>
-        </Toolbar>
-      </AppBar>
+    <Show />
 
-      <Login />
-    </>
+  //   <>
+  //    <AppBar className={classes.appbar} position="fixed">
+  //       <Toolbar variant="dense">
+  //         <IconButton className={classes.menu} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+  //           <MenuIcon />
+  //         </IconButton>
+  //         <Typography className={classes.logo} variant="h6" color="inherit">
+  //           logo
+  //         </Typography>
+  //       </Toolbar>
+  //     </AppBar>
+
+  //     <Login />
+  //   </>
   )
 }
 
