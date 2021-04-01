@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TransitionsModal({ open, handleClose, data }) {
     const classes = useStyles()
+    const { firstName } = data
 
     console.log(data)
   return (
@@ -40,9 +41,9 @@ export default function TransitionsModal({ open, handleClose, data }) {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <h2 id="transition-modal-title">Your Message Will Be Sent</h2>
+            <h2 id="transition-modal-title">Thank you {firstName}!</h2>
             <p id="transition-modal-description">
-              Thank You
+              your Message Will Be Sent
             </p>
           </div>
         </Fade>

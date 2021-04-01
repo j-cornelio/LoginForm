@@ -61,12 +61,10 @@ class Form extends Component {
     lastNameHelperText: '',
     dateBirthError: false,
     dateBirthHelperText: '',
-    homePhone: '',
     homePhoneError: false,
     homePhoneHelperText: '',
     emailError: false,
     emailHelperText: '',
-    socialSecurity: '',
     socialSecurityError: false,
     socialSecurityHelperText: '',
     cityError: false,
@@ -82,6 +80,10 @@ class Form extends Component {
     stateHelperText: '',
     submitButton: false,
     open: false,
+
+    
+    homePhone: '',
+    socialSecurity: '',
   }
 
   handleOpen = () => {
@@ -104,6 +106,8 @@ class Form extends Component {
       this.setState({
         [`${name}Error`]: false,
         [`${name}HelperText`]: '',
+        [`${name}`]: value,
+
       })
     }
   }
@@ -120,6 +124,7 @@ class Form extends Component {
       this.setState({
         [`${name}Error`]: false,
         [`${name}HelperText`]: '',
+        [`${name}`]: value,
       })
     }
   }
