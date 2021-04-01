@@ -67,8 +67,8 @@ class Form extends Component {
     emailError: false,
     emailHelperText: '',
     socialSecurity: '',
-    ssnError: false,
-    ssnHelperText: '',
+    socialSecurityError: false,
+    socialSecurityHelperText: '',
     cityError: false,
     cityHelperText: '',
     zipError: false,
@@ -82,7 +82,6 @@ class Form extends Component {
     stateHelperText: '',
     submitButton: false,
     open: false,
-    value: null
   }
 
   handleOpen = () => {
@@ -125,20 +124,6 @@ class Form extends Component {
     }
   }
 
-  phoneNumber = (e) => {
-    if(/[^0-9 -]/.test(e.target.value)){
-      this.setState({
-        homePhoneError: true,
-        homePhoneHelperText: 'please enter numbers'
-      })
-    } else {
-      this.setState({
-        homePhoneError: false,
-        homePhoneHelperText: '',
-      })
-    }
-  }
-
   emailChange = (e) => {
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
@@ -155,42 +140,25 @@ class Form extends Component {
     }
   }
 
-  socialEntirelyFilled = (data) => {
-      const ss = this.state.socialSecurity
-      const arr = ss.split('')
+  entirelyFilled = (infoName) => {
+      const value = this.state[infoName]
+      const arr = value.split('')
       const result = parseInt(arr.pop())
 
       if(!!result || result === 0){
           this.setState(() => ({ 
-            ssnError: false,
-            ssnHelperText: '' 
+            [`${infoName}Error`]: false,
+            [`${infoName}HelperText`]: ''
           }))
       } 
   } 
 
-  phoneEntirelyFilled = (data) => {
-      const ss = this.state.homePhone
-      const arr = ss.split('')
-      const result = parseInt(arr.pop())
+  onMaskValueSet = (e) => {
+    const { name, value } = e.target;
 
-      if(!!result || result === 0){
-          this.setState(() => ({ 
-            homePhoneError: false,
-            homePhoneHelperText: '' 
-          }))
-      } 
-  } 
-
-  onSocialSecurity = (e) => {
-    this.setState({ socialSecurity: e.target.value })
-
-    window.setTimeout(() => this.socialEntirelyFilled(), 0)
-  }
-
-  onHomePhone = (e) => {
-    this.setState({ homePhone: e.target.value })
+    this.setState({[name]: value })
     
-    window.setTimeout(() => this.phoneEntirelyFilled(), 0)
+    window.setTimeout(() => this.entirelyFilled(name), 0)
   }
 
   passwordChange = (e) => {
@@ -263,8 +231,8 @@ class Form extends Component {
       homePhoneHelperText,
       emailError,
       emailHelperText,
-      ssnError,
-      ssnHelperText,
+      socialSecurityError,
+      socialSecurityHelperText,
       cityError,
       cityHelperText,
       zipError,
@@ -305,36 +273,40 @@ class Form extends Component {
           helperText={lastNameHelperText}
           onChange={this.stringChange} 
         />
-        <TextField 
-          className={classes.textFld}
-          InputProps={{
-            classes: { input: classes.resize },
-          }}
-          inputProps={{ maxLength: 10 }}
-          id="date of birth" 
-          name="dateBirth"
-          label="Date of Birth" 
-          error={dateBirthError}
-          helperText={dateBirthHelperText}
-          onChange={this.numberChange} 
-        />
+
+        <InputMask
+          mask="99/99/9999"
+          value={this.state.dateBirth}
+          onChange={this.onMaskValueSet}
+        >
+          {() => <TextField 
+                  className={classes.textFld}
+                  id="date of birth"  
+                  name="dateBirth"
+                  label="Date of Birth" 
+                  error={dateBirthError}
+                  helperText={dateBirthHelperText}
+                />}
+        </InputMask>
+
         <InputMask
           mask="(999)999-9999"
           value={this.state.homePhone}
-          onChange={this.onHomePhone}
+          onChange={this.onMaskValueSet}
         >
           {() => <TextField 
                   className={classes.textFld} 
                   inputProps={{ 
                     classes: { input: classes.resize },
                   }}
-                  id="home phone" 
+                  id="home phone"
                   name="homePhone"
-                  label="Home Phone" 
+                  label="Home Phone"
                   error={homePhoneError}
                   helperText={homePhoneHelperText}
                 />}
         </InputMask>
+
         <TextField 
           className={classes.textFld} 
           InputProps={{
@@ -347,20 +319,22 @@ class Form extends Component {
           helperText={emailHelperText}
           onChange={this.emailChange}
         />
+
         <InputMask
           mask="999-99-9999"
           value={this.state.socialSecurity}
-          onChange={this.onSocialSecurity}
+          onChange={this.onMaskValueSet}
         >
           {() => <TextField 
                   className={classes.textFld}
                   id="social security" 
-                  name="ssn"
+                  name="socialSecurity"
                   label="SSN" 
-                  error={ssnError}
-                  helperText={ssnHelperText}
+                  error={socialSecurityError}
+                  helperText={socialSecurityHelperText}
                 />}
         </InputMask>
+
         <TextField 
           className={classes.textFld} 
           InputProps={{
@@ -373,6 +347,7 @@ class Form extends Component {
           helperText={cityHelperText}
           onChange={this.stringChange}
         />
+
         <TextField 
           id="zip code"
           name="zip" 
@@ -385,6 +360,7 @@ class Form extends Component {
           helperText={zipHelperText}
           onChange={this.numberChange}
         />
+
         <FormControl error={stateError} className={classes.formControl} name="stateSelect">
             <InputLabel helpertext={stateHelperText}>State</InputLabel>
             <Select
@@ -398,6 +374,7 @@ class Form extends Component {
             </Select>
             {stateError && <FormHelperText>Select your state from menu</FormHelperText>}
         </FormControl>
+
         <TextField 
           className={classes.textFld} 
           InputProps={{
@@ -412,6 +389,7 @@ class Form extends Component {
           helperText={passwordHelperText}
           onChange={this.passwordChange}
         />
+
         <TextField 
           className={classes.textFld}
           id="confirmed password"
@@ -427,14 +405,17 @@ class Form extends Component {
           onChange={this.passwordChange}
         />
 
+
         <div className={classes.buttonWrapper}>
           <Button className={classes.button} type="submit" variant="contained" color="primary">submit</Button>
           <Button className={classes.button} type="button">cancel</Button>
         </div>
 
+<pre>{JSON.stringify(this.state, null, 2) }</pre>
         <TransitionsModal 
           handleClose={this.handleClose}
           open={open} 
+          data={this.state}
         />
       </form>
     )

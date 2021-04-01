@@ -20,8 +20,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TransitionsModal({ open, handleClose }) {
-    const classes = useStyles();
+export default function TransitionsModal({ open, handleClose, data }) {
+    const classes = useStyles()
+
+    console.log(data)
   return (
     <div>
       <Modal
